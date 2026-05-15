@@ -1,33 +1,21 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
-echo "=== Lausitz-Ordner physisch löschen ==="
-rm -rf public/projekte/lausitz/
-echo "Gelöscht."
-
-echo ""
-echo "=== Auch lausitz.html und overlay-test.html entfernen ==="
-rm -f lausitz.html overlay-test.html
-echo "Gelöscht."
-
-echo ""
-echo "=== Frisches Git-Repo erstellen (ohne Lausitz) ==="
-REMOTE=$(git remote get-url origin 2>/dev/null)
-rm -rf .git
-git init
-git checkout -b main
+echo "=== AI Discoverability Update deployen ==="
 git add -A
-git commit -m "Creative Director Game v2.0 + Desktop Easter Egg
+git status
+echo ""
 
-- Komplettes Game mit 4 Akten, 3 Enden (Plagiat/Team/Kunde)
-- Alle neuen Videos: newton, greatness, believe, Ansage, feierabend
-- Desktop-Icon Easter Egg auf Homepage
-- Lausitz komplett entfernt inkl. History-Bereinigung"
+git commit -m "AI Discoverability: JSON-LD + llms.txt
+
+- Schema.org Person + ProfessionalService auf index.html
+- Detailliertes Person-Profil auf about.html (Awards, Agenturen, Skills)
+- llms.txt für AI-Agent-Discovery
+- robots.txt: Hinweis auf llms.txt"
 
 echo ""
-echo "=== Remote setzen und Force-Push ==="
-git remote add origin "$REMOTE"
-git push origin main --force
+echo "=== Push ==="
+git push origin main
 
 echo ""
 echo "=== DONE ==="

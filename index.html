@@ -13,6 +13,77 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Structured Data: Person + ProfessionalService -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://robertmiler.com/#person",
+        "name": "Robi Miler",
+        "alternateName": "Robert Miler",
+        "url": "https://robertmiler.com",
+        "image": "https://robertmiler.com/public/rm-portrait-sw.jpg",
+        "jobTitle": "Freelance Copywriter & Konzepter",
+        "description": "Freelance Copywriter und Konzepter aus Berlin. Kampagnen für Coca-Cola, BMWK, Terre des Femmes. Ausgezeichnet mit ADC Gold und GWA Effie.",
+        "email": "hello@robertmiler.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Berlin",
+          "addressCountry": "DE"
+        },
+        "knowsAbout": [
+          "Copywriting", "Konzeption", "Kampagnenentwicklung", "TV-Scripts",
+          "Claims", "Headlines", "Manifeste", "Social-Media-Copy", "SEO-Texte",
+          "Naming", "Workshop-Moderation", "Kreativkonzepte", "Werbetexte"
+        ],
+        "knowsLanguage": ["de", "en"],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Copywriter",
+          "occupationalCategory": "27-3043.00"
+        },
+        "award": ["ADC Gold", "GWA Effie"],
+        "sameAs": []
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://robertmiler.com/#service",
+        "name": "Robi Miler — Freelance Copywriter Berlin",
+        "url": "https://robertmiler.com",
+        "description": "Freelance Copywriting, Konzeption, Kampagnenentwicklung und Workshops in Berlin. Spezialisiert auf Headlines, Claims, TV-Scripts, Manifeste und Social-Media-Copy.",
+        "provider": { "@id": "https://robertmiler.com/#person" },
+        "areaServed": {
+          "@type": "Place",
+          "name": "Berlin, Deutschland"
+        },
+        "serviceType": [
+          "Copywriting", "Konzeption", "Kampagnenentwicklung",
+          "Workshop-Moderation", "SEO-Texte", "Naming"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Leistungen",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Copywriting — Headlines, Claims, Manifeste, Scripts" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Konzeption — Kampagnenideen, Kreativkonzepte" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO-Texte — suchmaschinenoptimierte Inhalte" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Workshops — Kreativ-Workshops und Moderation" } }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://robertmiler.com/#website",
+        "url": "https://robertmiler.com",
+        "name": "Robi Miler — Copy // Concept // Kokolores",
+        "author": { "@id": "https://robertmiler.com/#person" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

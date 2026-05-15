@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
 Sitemap: https://robertmiler.com/sitemap.xml
+
+# AI Agent Discovery
+# llms.txt — maschinenlesbare Zusammenfassung für AI-Agents
+# https://robertmiler.com/llms.txt
