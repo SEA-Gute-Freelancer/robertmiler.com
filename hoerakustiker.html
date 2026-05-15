@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hörakustiker — Robi Miler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="project-page">
+    <div class="project-window">
+
+      <!-- Titlebar -->
+      <div class="project-titlebar">
+        <div class="titlebar-dots">
+          <a href="index.html" class="dot-close">
+            <svg viewBox="0 0 6 6"><line x1="0" y1="0" x2="6" y2="6"/><line x1="6" y1="0" x2="0" y2="6"/></svg>
+          </a>
+          <div class="dot-min"></div>
+          <div class="dot-max"></div>
+        </div>
+        <span class="window-title">hoerakustiker.proj</span>
+      </div>
+
+      <!-- Content -->
+      <div class="project-content">
+
+        <!-- Sidebar -->
+        <div class="project-sidebar">
+          <div class="sidebar-nav">
+            <div class="sidebar-item active" data-slide="0">
+              <span class="slide-num">01</span> Intro
+            </div>
+            <div class="sidebar-item" data-slide="1">
+              <span class="slide-num">02</span> Die Spots
+            </div>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="sidebar-meta">
+            <div class="meta-block">
+              <div class="meta-label">Agentur</div>
+              <div class="meta-value">Red Bull Creative</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Kunde</div>
+              <div class="meta-value">Salzburger Hörakustiker</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Jahr</div>
+              <div class="meta-value">2018</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">Format</div>
+              <div class="meta-value">3 Funkspots</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main -->
+        <div class="project-main">
+
+          <!-- Slide 1: Intro -->
+          <div class="slide active">
+            <div class="slide-hero"><video src="public/projekte/hoerakustiker/geschirrschrank.mp4" controls playsinline></video></div>
+            <h2 style="color: var(--text-primary);">Salzburger Hörakustiker</h2>
+            <div class="highlight-text">Drei Funkspots. Ein Claim: "Der teuflisch-lustige Hörtest." Radio, das man nicht überhört.</div>
+            <div class="tag-row">
+              <span class="tag">Audio</span>
+              <span class="tag">Funk</span>
+              <span class="tag">Claim</span>
+            </div>
+          </div>
+
+          <!-- Slide 2: Die Spots -->
+          <div class="slide">
+            <h2>Die Spots</h2>
+            <p>Für die Salzburger Hörakustiker haben wir drei Funkspots entwickelt, die das Thema Hören auf die lustige Art angehen. Der Claim "Der teuflisch-lustige Hörtest" macht neugierig — und bringt die Leute in den Laden.</p>
+
+            <div class="video-spot">
+              <p class="spot-title">Spot: Der Geschirrschrank</p>
+              <video src="public/projekte/hoerakustiker/geschirrschrank.mp4" controls playsinline style="width:100%; max-width:480px; border-radius:8px;"></video>
+            </div>
+
+            <div class="video-spot">
+              <p class="spot-title">Spot: Der Wecker</p>
+              <video src="public/projekte/hoerakustiker/wecker.mp4" controls playsinline style="width:100%; max-width:480px; border-radius:8px;"></video>
+            </div>
+
+            <div class="video-spot">
+              <p class="spot-title">Spot: Die Vase</p>
+              <video src="public/projekte/hoerakustiker/vase.mp4" controls playsinline style="width:100%; max-width:480px; border-radius:8px;"></video>
+            </div>
+
+            <p>Produziert für Red Bull Creative in Salzburg.</p>
+          </div>
+
+          <!-- Slide Arrows -->
+          <div class="slide-arrows">
+            <div class="slide-arrow disabled" id="prevSlide">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </div>
+            <div class="slide-arrow" id="nextSlide">
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+          <div class="slide-counter" id="slideCounter">1 / 2</div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Fan Overlay -->
+  <div class="fan-overlay" id="fanOverlay"></div>
+
+  <!-- Fan Stack: Projekte -->
+  <div class="fan-stack" id="fanProjekte">
+    <div class="fan-item" data-project="unhate-women">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #1a3a2a, #2a5a3a);"></div>
+      <div><div class="fan-label">#UNHATE Women</div><div class="fan-sublabel">Terre des Femmes</div></div>
+    </div>
+    <div class="fan-item" data-project="vereinsgeschichte">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #3a1a1a, #5a2a2a);"></div>
+      <div><div class="fan-label">#Vereinsgeschichte</div><div class="fan-sublabel">Coca-Cola × Manuel Neuer</div></div>
+    </div>
+    <div class="fan-item" data-project="mischkiste">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #5a1a1a, #7a2a2a);"></div>
+      <div><div class="fan-label">Mischkiste</div><div class="fan-sublabel">Coca-Cola TVCs</div></div>
+    </div>
+    <div class="fan-item" data-project="mezzo-mix">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #4a2a1a, #6a3a2a);"></div>
+      <div><div class="fan-label">Mezzo Mix</div><div class="fan-sublabel">TVC + Social Media</div></div>
+    </div>
+    <div class="fan-item" data-project="bmwk">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #3a3a1a, #5a5a2a);"></div>
+      <div><div class="fan-label">BMWK</div><div class="fan-sublabel">Fachkräftekampagne</div></div>
+    </div>
+    <div class="fan-item" data-project="hoerakustiker">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #2a2a2a, #3a3a3a);"></div>
+      <div><div class="fan-label">Hörakustiker</div><div class="fan-sublabel">Funkspots Salzburg</div></div>
+    </div>
+    <div class="fan-item" data-project="ooh">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #1a2a2a, #2a3a3a);"></div>
+      <div><div class="fan-label">OOH</div><div class="fan-sublabel">Out-of-Home</div></div>
+    </div>
+  </div>
+
+  <!-- Fan Stack: Skills -->
+  <div class="fan-stack" id="fanSkills">
+    <div class="fan-item" data-page="copywriting">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #3a2a1a, #5a3a2a);"></div>
+      <div><div class="fan-label">Copywriting</div><div class="fan-sublabel">Headlines, Manifeste, Scripts</div></div>
+    </div>
+    <div class="fan-item" data-page="konzept">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #1a3a2a, #2a5a3a);"></div>
+      <div><div class="fan-label">Konzept</div><div class="fan-sublabel">Kreative Leitideen, 360°</div></div>
+    </div>
+    <div class="fan-item" data-page="seo">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #2a2a3a, #3a3a5a);"></div>
+      <div><div class="fan-label">SEO</div><div class="fan-sublabel">Content-Strategie, OnPage</div></div>
+    </div>
+    <div class="fan-item" data-page="workshops">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #3a3a1a, #5a5a2a);"></div>
+      <div><div class="fan-label">Workshops</div><div class="fan-sublabel">Kreativ-Training für Agenturen</div></div>
+    </div>
+    <div class="fan-item" onclick="window.open('https://www.sea-gute-freelancer.de','_blank')">
+      <div class="fan-thumb" style="background: linear-gradient(135deg, #1a1a3a, #2a2a5a);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8888cc" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+      <div><div class="fan-label" style="color: #8888cc;">SEA / Google Ads</div><div class="fan-sublabel">sea-gute-freelancer.de ↗</div></div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div class="dock-container">
+    <div class="dock">
+      <div class="dock-item" data-dock="home" onclick="goHome()">
+        <div class="dock-tooltip">Home</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item active" data-dock="projekte" onclick="toggleFan('Projekte')">
+        <div class="dock-tooltip">Projekte</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 6l4-3h12l4 3"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item" data-dock="skills" onclick="toggleFan('Skills')">
+        <div class="dock-tooltip">Skills</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8l2.8-2.8M17 7l2.8-2.8"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item" data-dock="about" onclick="navigateTo('about')">
+        <div class="dock-tooltip">About</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-sep"></div>
+      <div class="dock-item" data-dock="kontakt" onclick="navigateTo('kontakt')">
+        <div class="dock-tooltip">Kontakt</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-sep"></div>
+      <div class="dock-item" data-dock="spotify" onclick="toggleSpotify()">
+        <div class="dock-tooltip">Musik</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15c3-1 6-1 9 1"/><path d="M7 12c4-1.5 8-1.5 11 0.5"/><path d="M6.5 9c4.5-1.5 9.5-1.5 13 1"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Spotify Mini Player -->
+  <div class="spotify-mini" id="spotifyMini">
+    <iframe src="https://open.spotify.com/embed/playlist/5JBrhNPqNzqlVQWASSVIxl?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

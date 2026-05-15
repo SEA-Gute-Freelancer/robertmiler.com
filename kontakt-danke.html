@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nachricht gesendet — Robi Miler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="content-page">
+    <div class="content-window">
+      <div class="project-titlebar">
+        <div class="titlebar-dots">
+          <a href="index.html" class="dot-close"><svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg></a>
+          <div class="dot-min"></div>
+          <div class="dot-max"></div>
+        </div>
+        <span class="window-title">nachricht_gesendet.log</span>
+      </div>
+      <div class="content-body" style="text-align:center; padding:60px 40px;">
+        <div style="font-size:48px; margin-bottom:24px;">&#10003;</div>
+        <h2 style="color: var(--accent-green); margin-bottom:16px;">Nachricht gesendet!</h2>
+        <p style="color: var(--text-secondary); max-width:400px; margin:0 auto 32px;">Danke für deine Nachricht. Ich melde mich so schnell wie möglich bei dir.</p>
+        <a href="index.html" style="color:var(--accent-blue); font-family:var(--font-mono); font-size:13px; text-decoration:none;">← Zurück zur Startseite</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div class="dock-container">
+    <div class="dock">
+      <div class="dock-item" data-dock="home" onclick="goHome()">
+        <div class="dock-tooltip">Home</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item" data-dock="projekte" onclick="toggleFan('Projekte')">
+        <div class="dock-tooltip">Projekte</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 6l4-3h12l4 3"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item" data-dock="skills" onclick="toggleFan('Skills')">
+        <div class="dock-tooltip">Skills</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8l2.8-2.8M17 7l2.8-2.8"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-item" data-dock="about" onclick="navigateTo('about')">
+        <div class="dock-tooltip">About</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-sep"></div>
+      <div class="dock-item active" data-dock="kontakt" onclick="navigateTo('kontakt')">
+        <div class="dock-tooltip">Kontakt</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+      <div class="dock-sep"></div>
+      <div class="dock-item" data-dock="spotify" onclick="toggleSpotify()">
+        <div class="dock-tooltip">Musik</div>
+        <div class="dock-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15c3-1 6-1 9 1"/><path d="M7 12c4-1.5 8-1.5 11 0.5"/><path d="M6.5 9c4.5-1.5 9.5-1.5 13 1"/></svg>
+        </div>
+        <div class="dock-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spotify-mini" id="spotifyMini">
+    <iframe src="https://open.spotify.com/embed/playlist/5JBrhNPqNzqlVQWASSVIxl?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

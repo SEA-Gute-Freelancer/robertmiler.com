@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Creative Director</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;overflow:hidden;font-family:'Courier New',monospace;height:100vh;width:100vw;display:flex;align-items:center;justify-content:center}
+
+  #game{position:relative;width:100vw;height:calc(100vw * 448/672);max-height:100vh;max-width:calc(100vh * 672/448);background:#0a0a0a;overflow:hidden}
+
+  /* --- LAYERS --- */
+  #scene-img,#scene-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+  #scene-img{z-index:1}
+  #scene-video{z-index:2;background:#000}
+
+  /* Scanlines */
+  #scanlines{position:absolute;inset:0;z-index:8;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,0.06) 0px,rgba(0,0,0,0.06) 1px,transparent 1px,transparent 3px)}
+
+  /* Transition overlay */
+  #dim{position:absolute;inset:0;z-index:9;display:none;background:rgba(0,0,0,0);transition:background .3s}
+
+  /* --- BOOT --- */
+  #boot{position:absolute;inset:0;z-index:200;background:#0a0a0a;display:flex;flex-direction:column;justify-content:center;padding:6% 8%}
+  #boot pre{color:#33ff33;font-size:clamp(9px,1.8vw,14px);font-family:'Courier New',monospace;line-height:1.7;white-space:pre-wrap;word-break:break-all}
+
+  /* --- IDLE TEXT --- */
+  #idle-text{
+    position:absolute;bottom:16%;left:0;right:0;text-align:center;z-index:15;display:none;
+    color:rgba(255,255,255,0.5);font-size:clamp(8px,1.6vw,13px);
+    font-family:'Press Start 2P',monospace;text-shadow:1px 1px 4px rgba(0,0,0,0.9);
+    line-height:1.8;padding:0 10%;opacity:0;transition:opacity 0.8s;
+  }
+  #idle-text.show{opacity:1}
+
+  /* --- DIALOG --- */
+  #dialog{
+    position:absolute;bottom:0;left:0;right:0;z-index:30;
+    background:rgba(6,6,8,0.92);border-top:3px solid #c8a84e;
+    padding:clamp(10px,2vw,16px) clamp(12px,2.5vw,20px);
+    display:none;
+  }
+  #dialog-text{
+    color:#eee;font-size:clamp(10px,1.8vw,15px);
+    font-family:'Courier New',monospace;line-height:1.6;min-height:1.6em;white-space:pre-line;
+  }
+  #continue-hint{
+    color:#c8a84e;font-family:'Press Start 2P',monospace;
+    font-size:clamp(5px,1vw,8px);margin-top:8px;text-align:right;
+    animation:blink 1s step-end infinite;display:none;
+  }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+  /* --- CHOICES --- */
+  #choices{display:none;margin-top:10px;gap:8px}
+  #choices.show{display:flex}
+  #choices button{
+    flex:1;padding:clamp(6px,1.2vw,12px) 6px;
+    font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.1vw,9px);
+    cursor:pointer;border:2px solid;text-transform:uppercase;
+    transition:background .15s,color .15s;line-height:1.5;
+  }
+  #btn-a{background:#1a1a0a;color:#c8a84e;border-color:#c8a84e}
+  #btn-a:hover{background:#c8a84e;color:#000}
+  #btn-b{background:#0a1a0a;color:#4ec86a;border-color:#4ec86a}
+  #btn-b:hover{background:#4ec86a;color:#000}
+
+  /* --- GAME OVER --- */
+  #gameover{
+    position:absolute;inset:0;z-index:100;background:#000;
+    display:none;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:6%;
+  }
+  #gameover.show{display:flex}
+  #gameover h1{
+    font-family:'Press Start 2P',monospace;font-size:clamp(20px,5vw,42px);
+    color:#ff2222;margin-bottom:24px;animation:glitch .3s infinite;
+  }
+  @keyframes glitch{
+    0%,100%{text-shadow:2px 0 #ff0000,-2px 0 #00ffff}
+    25%{text-shadow:-2px 0 #ff0000,2px 0 #00ffff}
+    50%{text-shadow:1px 1px #ff0000,-1px -1px #00ffff}
+    75%{text-shadow:-1px -1px #ff0000,1px 1px #00ffff}
+  }
+  #gameover p{color:#aaa;font-family:'Courier New',monospace;font-size:clamp(10px,1.8vw,15px);line-height:1.8;margin-bottom:10px;max-width:520px}
+  .go-reason{color:#ff6666!important;margin-bottom:20px!important}
+  .go-moral{color:#bbb!important;font-style:italic!important;margin-bottom:6px!important;line-height:2!important}
+  .go-cta{color:#eee!important;font-family:'Press Start 2P',monospace!important;font-size:clamp(7px,1.3vw,11px)!important;line-height:2.2!important;margin-top:14px!important}
+  #gameover a{
+    display:inline-block;margin-top:20px;color:#33ff33;
+    font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.3vw,12px);
+    text-decoration:none;border:2px solid #33ff33;padding:12px 22px;
+    transition:all .2s;animation:pulse 1.5s ease-in-out infinite;
+  }
+  #gameover a:hover{background:#33ff33;color:#000}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 rgba(51,255,51,0)}50%{box-shadow:0 0 20px rgba(51,255,51,.4)}}
+
+  /* --- FX --- */
+  #game.shake{animation:shake .4s ease}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}10%{transform:translateX(-4px) translateY(2px)}
+    30%{transform:translateX(4px) translateY(-2px)}50%{transform:translateX(-3px)}
+    70%{transform:translateX(3px) translateY(1px)}90%{transform:translateX(-2px)}
+  }
+  .idle-breathe{animation:breathe 6s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.003) translateY(-.3px)}}
+</style>
+</head>
+<body>
+
+<div id="game">
+  <img id="scene-img">
+  <video id="scene-video" playsinline muted></video>
+  <div id="scanlines"></div>
+  <div id="dim"></div>
+  <div id="idle-text"></div>
+
+  <div id="dialog">
+    <p id="dialog-text"></p>
+    <div id="continue-hint">[ Klick ]</div>
+    <div id="choices">
+      <button id="btn-a"></button>
+      <button id="btn-b"></button>
+    </div>
+  </div>
+
+  <div id="gameover">
+    <h1>GAME OVER</h1>
+    <p class="go-reason" id="go-reason"></p>
+    <p class="go-moral" id="go-moral"></p>
+    <p>Ein guter Freelancer h&auml;tte deinen Job vielleicht gerettet.</p>
+    <p class="go-cta">Jetzt anschreiben auf<br>robertmiler.com</p>
+    <a href="kontakt.html">JETZT ANSCHREIBEN</a>
+  </div>
+
+  <div id="boot"><pre id="boot-text"></pre></div>
+</div>
+
+<script>
+/* ========================================================
+   CREATIVE DIRECTOR — The Game
+   v2.0 · robertmiler.com · 2026
+   ======================================================== */
+
+// ===================== ASSETS =====================
+const P = 'public/game/';
+const A = {
+  idle:       P+'MainBild.png',
+  mikeKommt:  P+'mike%20kommt%20rein..mp4',
+  briefing:   P+'Briefing.mp4',
+  kaffee:     P+'Kalter%20Kaffee.mp4',
+  buffet:     P+'Buffet.mp4',
+  ansage:     P+'Ansage.mp4',
+  feierabend: P+'feierabend.mp4',
+  newton:     P+'newton.mp4',
+  greatness:  P+'greatness.mp4',
+  believe:    P+'believe.mp4',
+  angryTeam:  P+'grok-video-cb6c4049-0cf8-4f8d-b966-2505a46c5f9c.mp4',
+  fired:      P+'K%C3%BCndigung.mp4',
+};
+
+// ===================== DOM =====================
+const $=id=>document.getElementById(id);
+const sceneImg=$('scene-img'), sceneVid=$('scene-video');
+const dimEl=$('dim'), idleEl=$('idle-text');
+const dialogEl=$('dialog'), dialogText=$('dialog-text');
+const contHint=$('continue-hint'), choicesEl=$('choices');
+const btnA=$('btn-a'), btnB=$('btn-b');
+const gameoverEl=$('gameover'), goReason=$('go-reason'), goMoral=$('go-moral');
+const gameEl=$('game'), bootEl=$('boot'), bootText=$('boot-text');
+
+// ===================== AUDIO =====================
+let actx=null;
+function beep(f,d,v=.05,t='square'){
+  try{if(!actx)actx=new(window.AudioContext||window.webkitAudioContext);
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.connect(g);g.connect(actx.destination);o.type=t;o.frequency.value=f;
+  g.gain.value=v;g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+d/1e3);
+  o.start();o.stop(actx.currentTime+d/1e3)}catch(e){}
+}
+function typeBeep(){beep(800+Math.random()*400,20,.02)}
+function selectBeep(){beep(520,60,.06);setTimeout(()=>beep(780,80,.06),70)}
+function rejectBeep(){beep(200,200,.06,'sawtooth');setTimeout(()=>beep(160,300,.05,'sawtooth'),150)}
+function approveBeep(){beep(660,80,.06);setTimeout(()=>beep(880,80,.06),80);setTimeout(()=>beep(1100,120,.06),160)}
+function gameOverBeep(){[400,350,300,200].forEach((f,i)=>setTimeout(()=>beep(f,300,.08,'sawtooth'),i*200))}
+
+// ===================== HELPERS =====================
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+const show=(el,d='block')=>{el.style.display=d};
+const hide=el=>{el.style.display='none'};
+
+function typeText(el,text,speed=30){
+  return new Promise(resolve=>{
+    el.textContent='';let i=0;
+    const id=setInterval(()=>{
+      if(i<text.length){el.textContent+=text[i];if(text[i]!==' '&&text[i]!=='\n')typeBeep();i++}
+      else{clearInterval(id);resolve()}
+    },speed);
+  });
+}
+
+function waitClick(){
+  return new Promise(resolve=>{
+    function h(e){if(e.target.tagName==='BUTTON')return;
+      document.removeEventListener('click',h);document.removeEventListener('keydown',h);
+      document.removeEventListener('touchstart',h);resolve()}
+    document.addEventListener('click',h);document.addEventListener('keydown',h);
+    document.addEventListener('touchstart',h);
+  });
+}
+
+function hideAll(){
+  hide(sceneImg);hide(sceneVid);hide(dimEl);hide(dialogEl);hide(idleEl);hide(contHint);
+  choicesEl.classList.remove('show');dialogText.textContent='';
+  sceneImg.className='';idleEl.classList.remove('show');
+}
+
+// ===================== SCENE PRIMITIVES =====================
+
+// Transition: fade to black, clean up, fade back
+async function trans(){
+  show(dimEl);dimEl.style.background='rgba(0,0,0,1)';
+  await delay(400);hideAll();await delay(200);
+  dimEl.style.background='rgba(0,0,0,0)';hide(dimEl);
+}
+
+// Show idle image with floating text lines
+async function idle(texts, dur=0){
+  sceneImg.src=A.idle;sceneImg.className='idle-breathe';show(sceneImg);
+  await delay(1200);
+  if(texts&&texts.length){
+    for(const t of texts){
+      idleEl.textContent=t;show(idleEl);idleEl.classList.add('show');
+      await delay(2800);idleEl.classList.remove('show');await delay(600);
+    }
+  }
+  if(dur>0)await delay(dur);
+}
+
+// Play a video, resolve when ended
+function playVid(key){
+  return new Promise(resolve=>{
+    sceneVid.src=A[key];sceneVid.currentTime=0;show(sceneVid);
+    sceneVid.play().catch(()=>{});
+    sceneVid.onended=()=>resolve();
+    sceneVid.onerror=()=>resolve();
+    setTimeout(resolve,9000); // fallback
+  });
+}
+
+// Play video then show click-through dialog lines
+async function video(key, lines){
+  await playVid(key);
+  sceneVid.pause(); // freeze last frame
+  show(dialogEl);
+  for(let i=0;i<lines.length;i++){
+    await typeText(dialogText,lines[i],35);
+    if(i<lines.length-1){show(contHint);await waitClick();hide(contHint)}
+  }
+  await delay(600);hide(dialogEl);
+}
+
+// Show A/B choice, return 'a' or 'b'
+function showChoice(labelA,labelB){
+  btnA.textContent=labelA;btnB.textContent=labelB;
+  choicesEl.classList.add('show');
+  return new Promise(resolve=>{
+    function onA(){cleanup();resolve('a')}
+    function onB(){cleanup();resolve('b')}
+    function cleanup(){btnA.removeEventListener('click',onA);btnB.removeEventListener('click',onB)}
+    btnA.addEventListener('click',onA);btnB.addEventListener('click',onB);
+  });
+}
+
+// Play motiv video, show dialog, offer choice. Returns 'neu' or 'fliegt'
+async function motiv(videoKey, lines, rejectLine){
+  await playVid(videoKey);
+  sceneVid.pause();
+  show(dialogEl);
+  for(let i=0;i<lines.length;i++){
+    await typeText(dialogText,lines[i],35);
+    if(i<lines.length-1){show(contHint);await waitClick();hide(contHint)}
+  }
+  await delay(300);
+  const c=await showChoice('\u{1F480} NEU. NOCHMAL.', '\u{1F525} DAS FLIEGT!');
+  choicesEl.classList.remove('show');
+
+  if(c==='b'){
+    // Approved — brief triumph before the fall
+    approveBeep();
+    await typeText(dialogText,'Du lehnst dich zurück.\n„Genau das! Raus damit!“',30);
+    await delay(1500);
+    hide(dialogEl);
+    return 'fliegt';
+  } else {
+    // Rejected
+    rejectBeep();
+    gameEl.classList.add('shake');
+    await typeText(dialogText,rejectLine,30);
+    setTimeout(()=>gameEl.classList.remove('shake'),400);
+    await delay(1800);
+    hide(dialogEl);
+    return 'neu';
+  }
+}
+
+// Game Over screen
+async function gameOver(reason, moral){
+  gameEl.classList.add('shake');await delay(400);
+  gameEl.classList.remove('shake');await delay(200);
+  gameOverBeep();
+  goReason.textContent=reason;
+  goMoral.textContent=moral;
+  hideAll();gameoverEl.classList.add('show');
+}
+
+// ===================== PLAGIAT ENDING =====================
+async function plagiatEnding(){
+  await trans();
+  await idle([
+    'Du leitest den Entwurf\nan den Kunden weiter.',
+    '…',
+    'Zwei Tage später.',
+  ]);
+  await trans();
+  await video('fired',[
+    'Die Anwälte von Nike haben angerufen.',
+    '„Just make it“? Ernsthaft?',
+    'Das war’s.',
+  ]);
+  await gameOver(
+    'Plagiat abgesegnet.\nAlle wissen es. Du auch.',
+    'Hätte vielleicht mal jemand gegoogelt.'
+  );
+}
+
+// ===================== ACT 4 — THE DECISION =====================
+async function decision(){
+  // Dramatic idle
+  sceneImg.src=A.idle;sceneImg.className='';show(sceneImg);
+  await delay(1000);
+
+  show(dialogEl);
+  const lines=[
+    'Es ist 22 Uhr. Deadline morgen 9:00.',
+    'Das Team sitzt mit leeren Augen\nam Schreibtisch.',
+    'Drei Entwürfe. Alle abgelehnt.\nWas machst du?',
+  ];
+  for(let i=0;i<lines.length;i++){
+    await typeText(dialogText,lines[i],35);
+    if(i<lines.length-1){show(contHint);await waitClick();hide(contHint)}
+  }
+  await delay(400);
+
+  const c=await showChoice(
+    '\u{1F525} ALLE BLEIBEN. DURCHARBEITEN.',
+    '\u{1F3E0} FEIERABEND. AB NACH HAUSE.'
+  );
+  choicesEl.classList.remove('show');
+  selectBeep();
+  hide(dialogEl);
+
+  if(c==='a'){
+    // PATH A — Team rebels
+    await trans();
+    await video('angryTeam',[
+      '…',
+      'Das Team steht auf.',
+      'Wir kündigen. Alle.\nViel Spaß beim Pitch. Alleine.',
+    ]);
+    await trans();
+    await video('fired',[
+      '…',
+      'Kein Team. Kein Pitch. Kein Job.',
+    ]);
+    await gameOver(
+      'Das Team hat geschlossen gekündigt.\nDu stehst alleine da.',
+      'Durcharbeiten klingt nach Führung.\nFühlt sich aber anders an.'
+    );
+  } else {
+    // PATH B — Client leaves
+    await trans();
+    await video('feierabend',[
+      'Das Team geht.',
+      'Die Lichter gehen aus.',
+      'Morgen wird alles besser…',
+    ]);
+    await trans();
+    await idle([
+      'Nächster Morgen, 9:01.',
+      'Der Kunde hat um 7 bei\nJung von Matt unterschrieben.',
+    ]);
+    await trans();
+    await video('fired',[
+      '…',
+      'Kein Kunde. Kein Umsatz. Kein Job.',
+    ]);
+    await gameOver(
+      'Der Kunde ist weg.\nJung von Matt sagt danke.',
+      'Nett sein reicht leider nicht,\nwenn die Deadline nicht wartet.'
+    );
+  }
+}
+
+// ===================== MAIN GAME FLOW =====================
+async function game(){
+
+  // ~~~ ACT 1 — DER AUFTRAG ~~~
+  await idle(['Montag morgen.','Erstmal Kaffee.']);
+  await trans();
+
+  await video('mikeKommt',[
+    'Chef! Chef! Großartige Neuigkeiten!',
+    'Mike Shoes hat angerufen.\nDie wollen eine Image-Kampagne.',
+    'Frisch, disruptiv, „noch nie dagewesen“.',
+    'Pitch ist morgen früh!',
+  ]);
+  await trans();
+
+  await video('briefing',[
+    'Die Key Account Managerin übernimmt.',
+    '„Budget ist… überschaubar.“',
+    '„Aber der Kunde will\nunprecedented creativity.“',
+    '„Das Team arbeitet heute Nacht durch.“',
+  ]);
+  await trans();
+
+  await idle(['Das Team arbeitet die Nacht durch…']);
+  await trans();
+
+  // ~~~ ACT 2 — DIE MOTIVE ~~~
+
+  // Motiv 1: JORDAN 1 NEWTON 0
+  let c = await motiv('newton',[
+    'Entwurf Nummer 1.',
+    'JORDAN 1 NEWTON 0 — Just make it.',
+    'Sportlich, provokant,\nein bisschen Straße.',
+  ], 'Stille.\nDer Senior dreht sich um und geht.');
+  if(c==='fliegt') return await plagiatEnding();
+  await trans();
+
+  // Kalter Kaffee
+  await video('kaffee',[
+    '…',
+    'Das ist nicht meine Glückstasse.',
+    'Kann man nicht einmal\nmit Profis arbeiten?',
+  ]);
+  await trans();
+
+  await idle(['…'], 1500);
+  await trans();
+
+  // Motiv 2: FIND YOUR GREATNESS
+  c = await motiv('greatness',[
+    'Entwurf Nummer 2.',
+    'FIND YOUR GREATNESS — Just make it.',
+    'Emotional, inspirierend,\ndie Straße ins Ungewisse.',
+  ], 'Sie lässt das Poster sinken\nund geht wortlos.');
+  if(c==='fliegt') return await plagiatEnding();
+  await trans();
+
+  // Burnout-Meldung
+  await video('briefing',[
+    'Chef, kurze Info.',
+    'Zwei Kreative haben Burnout gemeldet.',
+    'Und Jan hat heute gekündigt.',
+    '…',
+  ]);
+  await trans();
+
+  // Buffet — mit Entscheidung
+  await playVid('buffet');
+  sceneVid.pause();
+  show(dialogEl);
+  await typeText(dialogText,'Oh, vom Kundenlunch\nist noch was übrig.',35);
+  show(contHint);await waitClick();hide(contHint);
+  await typeText(dialogText,'Lachs? Nicht schlecht.',35);
+  await delay(400);
+  c = await showChoice('\u{1F370} MITNEHMEN. FÜR ZUHAUSE.', '\u{1F4AA} DEM TEAM GEBEN.');
+  choicesEl.classList.remove('show');
+  if(c==='a'){
+    rejectBeep();
+    await typeText(dialogText,'Du packst den Lachs ein.\nDas Team bekommt nichts.',30);
+    await delay(1800);
+  } else {
+    approveBeep();
+    await typeText(dialogText,'Du stellst die Reste\nins Großraumbüro.\nDankbare Blicke.',30);
+    await delay(1800);
+  }
+  hide(dialogEl);
+  await trans();
+
+  // ~~~ ACT 3 — LETZTER VERSUCH ~~~
+
+  await video('ansage',[
+    'Chef! Letzter Entwurf.',
+    'Wenn der nicht fliegt,\ndann weiß ich auch nicht mehr.',
+  ]);
+  await trans();
+
+  // Motiv 3: BELIEVE IN SOMETHING
+  c = await motiv('believe',[
+    'Entwurf Nummer 3.',
+    'BELIEVE IN SOMETHING — Just make it.',
+    'Mutig, direkt,\nalles auf eine Karte.',
+  ], 'Die beiden schauen sich an.\nDann gehen sie.');
+  if(c==='fliegt') return await plagiatEnding();
+  await trans();
+
+  // ~~~ ACT 4 — DIE ENTSCHEIDUNG ~~~
+  await decision();
+}
+
+// ===================== BOOT SEQUENCE =====================
+async function boot(){
+  const lines=[
+    'C:\\CREATIVE\\> dir','',
+    ' Verzeichnis von C:\\CREATIVE','',
+    ' DIRECTOR  EXE    2.048.576  15.05.26',
+    ' ASSETS    DAT    8.741.293  15.05.26','',
+    ' 2 Datei(en)   10.789.869 Bytes','',
+    'C:\\CREATIVE\\> DIRECTOR.EXE','',
+  ];
+  for(const l of lines){bootText.textContent+=l+'\n';await delay(80+Math.random()*60)}
+
+  bootText.textContent+='Lade Szenen';
+  for(let i=0;i<3;i++){await delay(350);bootText.textContent+='.'}
+  bootText.textContent+=' OK\n\n';
+  await delay(200);
+
+  // Progress bar
+  const W=22;
+  for(let i=0;i<=W;i++){
+    const bar='█'.repeat(i)+'░'.repeat(W-i);
+    const pct=Math.round(i/W*100);
+    const a=bootText.textContent.split('\n');
+    a[a.length-1]='  ['+bar+'] '+pct+'%';
+    bootText.textContent=a.join('\n');
+    await delay(40+Math.random()*30);
+  }
+  await delay(300);
+
+  bootText.textContent+='\n\n';
+  const t=[
+    '  ███ CREATIVE DIRECTOR ███','',
+    '       v2.0  © 2026','      robertmiler.com','',''
+  ];
+  for(const l of t){bootText.textContent+=l+'\n';await delay(80)}
+  bootText.textContent+='  > Drücke eine Taste…';
+
+  // Preload
+  new Image().src=A.idle;
+
+  await new Promise(r=>{
+    function h(){document.removeEventListener('keydown',h);document.removeEventListener('click',h);
+      document.removeEventListener('touchstart',h);r()}
+    document.addEventListener('keydown',h);document.addEventListener('click',h);
+    document.addEventListener('touchstart',h);
+  });
+  selectBeep();
+  await delay(200);
+  hide(bootEl);
+  game();
+}
+
+// ===================== START =====================
+boot();
+</script>
+</body>
+</html>

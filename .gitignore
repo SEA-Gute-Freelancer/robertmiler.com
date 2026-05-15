@@ -1,0 +1,7 @@
+.DS_Store
+*.pdf
+*.psd
+*.ai
+*.indd
+KONZEPT.md
+node_modules/
