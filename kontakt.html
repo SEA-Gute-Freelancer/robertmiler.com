@@ -13,6 +13,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <!-- BEGIN TRACKING (Consent Mode V2 + GTM) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('consent', 'default', {
+    'ad_storage': 'denied','ad_user_data': 'denied','ad_personalization': 'denied',
+    'analytics_storage': 'denied','functionality_storage': 'denied',
+    'personalization_storage': 'denied','security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  try {
+    var s = JSON.parse(localStorage.getItem('rm_consent_v2'));
+    if (s && s.timestamp && Date.now() - s.timestamp < 33696000000 && s.signals) {
+      gtag('consent', 'update', s.signals);
+    }
+  } catch(e) {}
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5WDVJC9F');
+</script>
+<!-- END TRACKING -->
+
 </head>
 <body>
 
@@ -27,7 +51,7 @@
         <span class="window-title">neue_nachricht.eml</span>
       </div>
       <div class="content-body">
-        <form class="mail-form" action="https://formsubmit.co/hello@robertmiler.com" method="POST">
+        <form class="mail-form" action="https://formsubmit.co/hello@robertmiler.com" method="POST" onsubmit="(function(f){try{sessionStorage.setItem('rm_lead_data',JSON.stringify({email:f.email.value,name:f.name.value,ts:Date.now()}))}catch(e){}})(this)">
           <!-- Formsubmit config -->
           <input type="hidden" name="_subject" value="Neue Nachricht von robertmiler.com">
           <input type="hidden" name="_captcha" value="false">
@@ -183,5 +207,8 @@
   </div>
   <script src="js/main.js"></script>
 
+
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WDVJC9F" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script src="js/consent.js"></script>
 </body>
 </html>

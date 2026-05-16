@@ -8,6 +8,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <!-- BEGIN TRACKING (Consent Mode V2 + GTM) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('consent', 'default', {
+    'ad_storage': 'denied','ad_user_data': 'denied','ad_personalization': 'denied',
+    'analytics_storage': 'denied','functionality_storage': 'denied',
+    'personalization_storage': 'denied','security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  try {
+    var s = JSON.parse(localStorage.getItem('rm_consent_v2'));
+    if (s && s.timestamp && Date.now() - s.timestamp < 33696000000 && s.signals) {
+      gtag('consent', 'update', s.signals);
+    }
+  } catch(e) {}
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5WDVJC9F');
+</script>
+<!-- END TRACKING -->
+
 </head>
 <body>
 
@@ -41,11 +65,25 @@
         <h3>5. Ihre Rechte</h3>
         <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Wenden Sie sich dazu an hello@robertmiler.com.</p>
 
-        <h3>6. Cookies</h3>
-        <p>Diese Website verwendet keine Cookies.</p>
+        <h3>6. Cookies und Einwilligung (Consent Mode V2)</h3>
+        <p>Diese Website verwendet Cookies und vergleichbare Technologien für Reichweitenmessung und Werbung. Beim ersten Besuch erscheint ein Einwilligungsbanner. Solange Sie keine Auswahl getroffen oder „Ablehnen" gewählt haben, werden keine personenbezogenen Daten an Google übertragen — Google verwendet in diesem Fall den anonymen „Consent Mode V2"-Modus mit serverseitiger Modellierung. Erst nach aktiver Einwilligung („Akzeptieren") werden Cookies gesetzt und Daten an Google übermittelt. Ihre Entscheidung wird lokal in Ihrem Browser (localStorage) für 13 Monate gespeichert. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie die Browser-Daten dieser Seite löschen oder unten auf „Cookie-Einstellungen" klicken.</p>
 
-        <h3>7. Analytics</h3>
-        <p>Diese Website verwendet keine Tracking- oder Analytics-Tools.</p>
+        <h3>7. Google Analytics 4</h3>
+        <p>Diese Website nutzt Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics verwendet Cookies und ähnliche Technologien, um die Nutzung dieser Website zu analysieren. Erfasst werden u. a. Seitenaufrufe, Verweildauer, Geräteinformationen und gekürzte IP-Adressen (IP-Anonymisierung ist aktiviert). Eine Datenübertragung in die USA kann nicht ausgeschlossen werden; Google ist nach dem EU-US Data Privacy Framework zertifiziert. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) sowie § 25 Abs. 1 TTDSG. Eine Auswertung erfolgt nur nach Ihrer aktiven Einwilligung über das Cookie-Banner. Mehr Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
+
+        <h3>8. Google Ads & Conversion-Tracking</h3>
+        <p>Diese Website verwendet Google Ads und das zugehörige Conversion-Tracking der Google Ireland Limited. Wenn Sie über eine Google-Ads-Anzeige auf diese Seite gelangen, wird ein Cookie zur Erfolgsmessung gesetzt (gültig 90 Tage). Bei einer Conversion (z. B. Absenden des Kontaktformulars) werden anonymisierte statistische Daten an Google übertragen, um die Wirksamkeit von Werbeanzeigen zu messen. Zusätzlich nutzen wir „Enhanced Conversions": Dabei werden Ihre eingegebene E-Mail-Adresse und Ihr Name unwiderruflich gehasht (SHA-256), bevor sie an Google übermittelt werden — Google kann daraus keine Klartextdaten rekonstruieren, gleicht den Hash aber gegen eingeloggte Google-Konten ab, um Conversions geräteübergreifend zuzuordnen. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung) sowie § 25 Abs. 1 TTDSG. Mehr Informationen: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a>.</p>
+
+        <h3>9. Google Tag Manager</h3>
+        <p>Zur Verwaltung der oben genannten Dienste setzt diese Website den Google Tag Manager ein. Der Tag Manager selbst erstellt keine Nutzerprofile und speichert keine Cookies. Er dient lediglich dazu, andere Tags zu laden — und tut dies nur, wenn die zugehörige Einwilligungsstufe (Analyse / Werbung) erteilt wurde. Mehr Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
+
+        <h3>10. Empfänger / Drittlandübermittlung</h3>
+        <p>Empfänger der oben beschriebenen Daten ist Google Ireland Limited mit möglicher Weiterleitung an Google LLC (USA). Google ist seit Juli 2023 nach dem EU-US Data Privacy Framework durch einen Angemessenheitsbeschluss der Europäischen Kommission zertifiziert. Eine Datenübertragung erfolgt nur nach Ihrer Einwilligung.</p>
+
+        <h3>11. Speicherdauer</h3>
+        <p>Cookie-Einwilligung (localStorage): 13 Monate. Google-Analytics-Daten: standardmäßig 2 Monate (Property-Setting). Google-Ads-Conversion-Cookies: 90 Tage. Server-Logfiles: 7 Tage.</p>
+
+        <p style="margin-top:24px;"><a href="#" onclick="event.preventDefault();window.rmConsent&&window.rmConsent.show()" style="color:var(--accent-blue);font-family:var(--font-mono);font-size:12px;">› Cookie-Einstellungen erneut öffnen</a></p>
 
       </div>
     </div>
@@ -169,5 +207,8 @@
   </div>
   <script src="js/main.js"></script>
 
+
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WDVJC9F" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script src="js/consent.js"></script>
 </body>
 </html>

@@ -108,6 +108,30 @@
   .idle-breathe{animation:breathe 6s ease-in-out infinite}
   @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.003) translateY(-.3px)}}
 </style>
+  <!-- BEGIN TRACKING (Consent Mode V2 + GTM) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('consent', 'default', {
+    'ad_storage': 'denied','ad_user_data': 'denied','ad_personalization': 'denied',
+    'analytics_storage': 'denied','functionality_storage': 'denied',
+    'personalization_storage': 'denied','security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  try {
+    var s = JSON.parse(localStorage.getItem('rm_consent_v2'));
+    if (s && s.timestamp && Date.now() - s.timestamp < 33696000000 && s.signals) {
+      gtag('consent', 'update', s.signals);
+    }
+  } catch(e) {}
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5WDVJC9F');
+</script>
+<!-- END TRACKING -->
+
 </head>
 <body>
 
@@ -133,7 +157,7 @@
     <p class="go-moral" id="go-moral"></p>
     <p>Ein guter Freelancer h&auml;tte deinen Job vielleicht gerettet.</p>
     <p class="go-cta">Jetzt anschreiben auf<br>robertmiler.com</p>
-    <a href="kontakt.html">JETZT ANSCHREIBEN</a>
+    <a href="kontakt.html" onclick="window.dataLayer&&window.dataLayer.push({event:'creative_director_cta_click'})">JETZT ANSCHREIBEN</a>
   </div>
 
   <div id="boot"><pre id="boot-text"></pre></div>
@@ -287,6 +311,12 @@ async function motiv(videoKey, lines, rejectLine){
   await delay(300);
   const c=await showChoice('\u{1F480} NEU. NOCHMAL.', '\u{1F525} DAS FLIEGT!');
   choicesEl.classList.remove('show');
+  // Tracking: Motiv-Choice
+  (window.dataLayer=window.dataLayer||[]).push({
+    event:'creative_director_motiv_choice',
+    cd_motiv:videoKey,
+    cd_choice:c==='b'?'fliegt':'neu'
+  });
 
   if(c==='b'){
     // Approved — brief triumph before the fall
@@ -309,6 +339,11 @@ async function motiv(videoKey, lines, rejectLine){
 
 // Game Over screen
 async function gameOver(reason, moral){
+  // Tracking: Game-Over-Event mit Reason-Tag
+  (window.dataLayer=window.dataLayer||[]).push({
+    event:'creative_director_game_over',
+    cd_reason:(reason||'').split('\n')[0]
+  });
   gameEl.classList.add('shake');await delay(400);
   gameEl.classList.remove('shake');await delay(200);
   gameOverBeep();
@@ -360,6 +395,11 @@ async function decision(){
     '\u{1F3E0} FEIERABEND. AB NACH HAUSE.'
   );
   choicesEl.classList.remove('show');
+  // Tracking: Decision Path
+  (window.dataLayer=window.dataLayer||[]).push({
+    event:'creative_director_decision',
+    cd_path:c==='a'?'arbeiten':'feierabend'
+  });
   selectBeep();
   hide(dialogEl);
 
@@ -563,11 +603,16 @@ async function boot(){
   selectBeep();
   await delay(200);
   hide(bootEl);
+  // Tracking: Game gestartet (Boot-Sequenz beendet, User hat aktiv weitergeklickt)
+  (window.dataLayer=window.dataLayer||[]).push({event:'creative_director_game_started'});
   game();
 }
 
 // ===================== START =====================
 boot();
 </script>
+
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WDVJC9F" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script src="js/consent.js"></script>
 </body>
 </html>

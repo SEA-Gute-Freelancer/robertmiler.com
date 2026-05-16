@@ -85,5 +85,31 @@
   </div>
   <script src="js/main.js"></script>
 
+  <!-- Lead-Conversion + Enhanced Conversion Data -->
+  <script>
+  (function(){
+    window.dataLayer = window.dataLayer || [];
+    var lead = null;
+    try { lead = JSON.parse(sessionStorage.getItem('rm_lead_data')); } catch(e) {}
+    // Nur als Lead werten, wenn Form-Submit-Daten <10min alt vorliegen
+    var fresh = lead && lead.ts && (Date.now() - lead.ts < 10*60*1000);
+    var payload = {
+      event: 'generate_lead',
+      lead_value: 40,
+      lead_currency: 'EUR'
+    };
+    if (fresh) {
+      payload.user_data = {
+        email: (lead.email || '').trim().toLowerCase(),
+        first_name: (lead.name || '').trim().split(' ')[0] || '',
+        last_name: (lead.name || '').trim().split(' ').slice(1).join(' ') || ''
+      };
+      // Aufraeumen — Datensatz nicht persistieren
+      try { sessionStorage.removeItem('rm_lead_data'); } catch(e) {}
+    }
+    window.dataLayer.push(payload);
+  })();
+  </script>
+
 </body>
 </html>
