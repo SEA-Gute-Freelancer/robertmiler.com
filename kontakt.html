@@ -51,12 +51,8 @@
         <span class="window-title">neue_nachricht.eml</span>
       </div>
       <div class="content-body">
-        <form class="mail-form" action="https://formsubmit.co/hello@robertmiler.com" method="POST" onsubmit="(function(f){try{sessionStorage.setItem('rm_lead_data',JSON.stringify({email:f.email.value,name:f.name.value,ts:Date.now()}))}catch(e){}})(this)">
-          <!-- Formsubmit config -->
-          <input type="hidden" name="_subject" value="Neue Nachricht von robertmiler.com">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://robertmiler.com/kontakt-danke.html">
-          <input type="text" name="_honey" style="display:none">
+        <form class="mail-form" action="/api/contact" method="POST" onsubmit="(function(f){try{sessionStorage.setItem('rm_lead_data',JSON.stringify({email:f.email.value,name:f.name.value,ts:Date.now()}))}catch(e){}})(this)">
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
 
           <div class="mail-field">
             <label>An:</label>
@@ -72,7 +68,7 @@
           </div>
           <div class="mail-field">
             <label for="subject">Betreff:</label>
-            <input type="text" id="subject" name="_subject" placeholder="Zusammenarbeit / Anfrage / Einfach mal Hallo" style="flex:1; background:transparent; border:none; color:var(--text-primary); font-family:var(--font-mono); font-size:13px; outline:none;">
+            <input type="text" id="subject" name="subject" placeholder="Zusammenarbeit / Anfrage / Einfach mal Hallo" style="flex:1; background:transparent; border:none; color:var(--text-primary); font-family:var(--font-mono); font-size:13px; outline:none;">
           </div>
           <div class="mail-body-text">
             <textarea name="message" rows="6" placeholder="Ob konkretes Projekt oder erstmal kennenlernen — schreib mir einfach. Ich antworte schnell und trinke gerne Kaffee." required style="width:100%; background:transparent; border:none; color:var(--text-primary); font-family:var(--font-body); font-size:14px; line-height:1.7; resize:vertical; outline:none; min-height:120px;"></textarea>
