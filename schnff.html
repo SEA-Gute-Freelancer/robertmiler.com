@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>schnff. — die Koks-App (Satire)</title>
+<meta name="description" content="Die Koks-App: Stressbewältigung für die Werbebranche. Drei Lines, mit der Nase zu bedienen. 0,0 g Wirkstoff, 100 % Berufsalltag. Am Ende wartet eine medizinische Empfehlung.">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0d">
+<meta property="og:title" content="schnff. — Stressbewältigung für die Werbebranche (Satire)">
+<meta property="og:description" content="Stressbewältigung für die Werbebranche. Mit der Nase zu bedienen. 0,0 g Wirkstoff, 100 % Satire.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://robertmiler.com/schnff-assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://robertmiler.com/schnff">
+<link rel="canonical" href="https://robertmiler.com/schnff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+@font-face{font-family:Anton;font-style:normal;font-weight:400;font-display:swap;src:url(/schnff-assets/anton-400.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(/schnff-assets/plexmono-400.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url(/schnff-assets/plexmono-600.woff2) format("woff2")}
+:root{
+  --bg:#0a0a0d; --paper:#f6f5f1; --ink:#101014;
+  --mut:#9b9ba6; --mut-ink:#5c5c60; --acc:#ff3b1f;
+  --line:#26262e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{touch-action:manipulation}
+html,body{height:100%}
+body{
+  height:100vh;height:100dvh;overflow:hidden;
+  background:var(--bg);color:#fff;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  -webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  overscroll-behavior:none;position:fixed;inset:0;
+}
+.display{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.02em}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:calc(20px + env(safe-area-inset-top)) 24px calc(20px + env(safe-area-inset-bottom));
+  opacity:0;pointer-events:none;transition:opacity .45s ease;
+}
+.screen.active{opacity:1;pointer-events:auto}
+
+/* ---------- Intro ---------- */
+.brandrow{display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:Anton;font-size:26px;text-transform:lowercase;letter-spacing:.01em}
+.badge{
+  font-size:10px;font-weight:600;letter-spacing:.24em;
+  color:var(--acc);border:1px solid var(--acc);outline:2px solid var(--acc);outline-offset:3px;
+  padding:6px 10px 5px;border-radius:1px;transform:rotate(-4deg);
+}
+.intro-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;max-width:560px}
+.intro-mid h1{font-size:clamp(2.1rem,10vw,4.6rem);line-height:.98}
+.intro-mid h1 span{display:block}
+.intro-mid h1 span:nth-child(2){margin-left:.55em}
+.intro-mid h1 span:nth-child(3){margin-left:1.3em}
+.sub{font-size:16px;line-height:1.55;color:var(--mut);max-width:36ch}
+.btn{
+  display:inline-block;background:var(--acc);color:#0a0a0d;
+  font-weight:600;font-size:16px;letter-spacing:.02em;
+  padding:17px 26px;border-radius:2px;width:max-content;
+  text-decoration:none;transition:transform .12s ease;
+}
+.btn:active{transform:scale(.97)}
+.smallprint{font-size:11px;line-height:1.6;color:var(--mut);max-width:52ch;border-top:1px solid var(--line);padding-top:12px}
+.sp-label{display:block;font-size:9px;letter-spacing:.26em;color:#6a6a74;margin-bottom:6px}
+.smallprint a{color:var(--mut)}
+
+/* ---------- Loading ---------- */
+#screen-loading{justify-content:center;gap:10px}
+#loadlines{display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--mut)}
+#loadlines .on{color:#fff}
+.cursor{display:inline-block;width:9px;height:17px;background:var(--acc);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- Anleitung ---------- */
+#screen-howto{justify-content:center;gap:30px;max-width:560px;overflow:hidden}
+#screen-howto>*{position:relative}
+#screen-howto .howto-bg{
+  position:absolute;right:-14%;top:-6%;z-index:-1;pointer-events:none;
+  font-family:Anton;font-size:52vh;line-height:1;color:#15151b;
+  transform:rotate(6deg);user-select:none;
+}
+#screen-howto h2{font-size:clamp(1.9rem,8vw,3rem)}
+.steps{display:flex;flex-direction:column;gap:20px}
+.step{display:flex;gap:18px;align-items:baseline}
+.step b{font-family:Anton;font-weight:400;font-size:30px;color:var(--acc);min-width:38px}
+.step p{font-size:16px;line-height:1.45}
+.note{font-size:13px;color:var(--mut);line-height:1.6;max-width:40ch}
+#deskhint{display:none;font-size:13px;color:var(--mut)}
+
+/* ---------- Game ---------- */
+#screen-game{padding:0}
+#board{
+  position:absolute;inset:0;touch-action:none;cursor:crosshair;
+  background:
+    radial-gradient(120% 90% at 78% 8%,rgba(255,255,255,.055),transparent 55%),
+    radial-gradient(90% 70% at 15% 95%,rgba(120,130,255,.05),transparent 60%),
+    linear-gradient(160deg,#101016 0%,#0a0a0d 45%,#070709 100%);
+}
+.hud{
+  position:absolute;top:0;left:0;right:0;display:flex;align-items:center;
+  justify-content:space-between;
+  padding:calc(14px + env(safe-area-inset-top)) 18px 10px;
+  pointer-events:none;
+}
+.hud .brand{font-size:18px;color:var(--mut)}
+#lineCount{font-size:13px;letter-spacing:.18em;color:#fff}
+#btn-sound{
+  pointer-events:auto;font-size:11px;letter-spacing:.14em;color:var(--mut);
+  padding:10px 6px;min-height:34px;
+}
+#btn-skip{
+  position:absolute;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;
+  transform:translateX(-50%);white-space:nowrap;
+  font-size:12px;color:var(--mut);text-decoration:underline;
+  text-underline-offset:3px;padding:12px;
+}
+#toast{
+  position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(8px);
+  background:#16161c;border:1px solid var(--line);color:#fff;
+  font-size:13.5px;line-height:1.4;padding:13px 18px;border-radius:2px;
+  max-width:min(86vw,420px);text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;
+  z-index:60;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- Whiteout ---------- */
+#whiteout{
+  position:fixed;inset:0;background:var(--paper);opacity:0;
+  pointer-events:none;transition:opacity .55s ease;z-index:50;
+}
+#whiteout.on{opacity:1}
+
+/* ---------- Auflösung ---------- */
+#screen-end{
+  background:var(--paper);color:var(--ink);overflow-y:auto;
+  justify-content:flex-start;gap:0;
+}
+.end-wrap{max-width:560px;width:100%;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
+.pulse-label{font-size:11px;letter-spacing:.24em;color:var(--mut-ink);margin-top:6vh}
+#pulseNum{font-size:clamp(4.6rem,26vw,9rem);line-height:1;color:var(--ink)}
+#pulseNum small{font-family:"IBM Plex Mono";font-size:16px;letter-spacing:.1em;color:var(--acc)}
+.stats{margin-top:20px;display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--mut-ink)}
+.divider{width:74px;height:3px;flex-shrink:0;background:var(--acc);margin:34px 0 26px -24px}
+.claim{font-size:clamp(1.75rem,8vw,3.2rem);line-height:1.02;max-width:12ch}
+.end-body{font-size:16px;line-height:1.6;color:#333;margin:20px 0 26px;max-width:40ch}
+.end-cta-sub{font-size:12.5px;color:var(--mut-ink);margin-top:12px}
+.end-actions{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+.ghost{
+  border:1px solid var(--ink);color:var(--ink);padding:13px 18px;
+  font-size:14px;border-radius:2px;min-height:48px;
+}
+.linkish{
+  color:var(--ink);font-size:14px;min-height:48px;padding:13px 6px;
+  text-decoration:underline;text-underline-offset:3px;
+}
+.end-foot{
+  margin-top:auto;padding:26px 0 8px;border-top:1px solid #d9d7d0;
+  font-size:12px;line-height:1.65;color:var(--mut-ink);margin-top:48px;
+}
+.end-foot a{color:var(--mut-ink)}
+.reveal{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.reveal.on{opacity:1;transform:none;pointer-events:auto}
+@media (prefers-reduced-motion: reduce){
+  .reveal{transition:none;transform:none}
+  #toast{transition:none}
+  .screen{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== INTRO ========== -->
+<section class="screen active" id="screen-intro">
+  <div class="brandrow">
+    <div class="brand">schnff.</div>
+    <div class="badge">SATIRE</div>
+  </div>
+  <div class="intro-mid">
+    <h1 class="display">
+      <span>Deadline um 9.</span>
+      <span>Re-Briefing um 17:58.</span>
+      <span>Pitch am Wochenende.</span>
+    </h1>
+    <p class="sub">Unsere Branche hat einen Weg gefunden, damit klarzukommen. Keinen guten. Das hier ist die digitale Version: 0,0&nbsp;g Wirkstoff, 100&nbsp;% Berufsalltag.</p>
+    <button class="btn" id="btn-start">Session starten</button>
+  </div>
+  <p class="smallprint"><span class="sp-label">PFLICHTTEXT</span>Enthält kein Kokain. Zu Risiken und Nebenwirkungen fragen Sie Ihren Creative Director oder Ihre Kundenberatung. <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
+</section>
+
+<!-- ========== LOADING ========== -->
+<section class="screen" id="screen-loading" aria-live="polite">
+  <div id="loadlines"></div>
+</section>
+
+<!-- ========== ANLEITUNG ========== -->
+<section class="screen" id="screen-howto">
+  <div class="howto-bg" aria-hidden="true">03</div>
+  <h2 class="display">Anwendung</h2>
+  <div class="steps">
+    <div class="step"><b>01</b><p>Handy flach auf den Tisch.</p></div>
+    <div class="step"><b>02</b><p>Nase auf den Screen.</p></div>
+    <div class="step"><b>03</b><p>Line in einem Zug durchziehen.</p></div>
+  </div>
+  <p class="note">Dein Display ist das Sauberste, was diese Branche je durch die Nase gezogen hat.</p>
+  <p id="deskhint">Kein Touchscreen? Maus geht auch. Zählt aber nur halb.</p>
+  <button class="btn" id="btn-go">Na dann.</button>
+</section>
+
+<!-- ========== GAME ========== -->
+<section class="screen" id="screen-game">
+  <canvas id="board" aria-label="Drei weiße Lines auf dunklem Glas. Mit Nase oder Finger wegziehen."></canvas>
+  <div class="hud">
+    <div class="brand">schnff.</div>
+    <div id="lineCount">0/3 GEZOGEN</div>
+    <button id="btn-sound" aria-pressed="false" aria-label="Ton an/aus">TON [ ]</button>
+  </div>
+  <button id="btn-skip">Ich bin clean — überspringen</button>
+</section>
+
+<!-- ========== AUFLÖSUNG ========== -->
+<section class="screen" id="screen-end">
+  <div class="end-wrap">
+    <p class="pulse-label reveal">PULS</p>
+    <div class="display reveal" id="pulseWrap"><span id="pulseNum">72</span> <small id="pulseUnit">bpm</small></div>
+    <div class="stats" id="statList">
+      <p class="reveal">Schlaf: wird nachgereicht.</p>
+      <p class="reveal">Selbstwert: fremdfinanziert.</p>
+      <p class="reveal">Wochentag: Dienstag.</p>
+    </div>
+    <div class="divider reveal"></div>
+    <h2 class="display claim reveal">Ein Freelancer ist besser für deine Gesundheit.</h2>
+    <p class="end-body reveal">Zieht Projekte durch, sonst nichts. Beruhigt den Kunden statt sich selbst. Und danach: wieder weg. Ohne Entzugserscheinungen.</p>
+    <div class="reveal">
+      <a class="btn" id="btn-book" href="/kontakt">Jetzt Freelancer buchen</a>
+      <p class="end-cta-sub">Robert Miler — Text, Konzept, Google Ads. Läuft ausschließlich auf Filterkaffee.</p>
+    </div>
+    <div class="end-actions reveal">
+      <button class="ghost" id="btn-again">Noch eine Session</button>
+      <button class="linkish" id="btn-share">Teilen</button>
+    </div>
+    <div class="end-foot reveal">
+      Für alle, die gerade dachten: „Die Lines müssten aber quer liegen“ —
+      hier ist die Nummer der Suchtberatung: <a href="tel:+491806313031">01806 313031</a> (täglich 8–24&nbsp;Uhr).
+      Nachts und kostenfrei: Telefonseelsorge <a href="tel:08001110111">0800 111 0 111</a>.
+      Der Stress ist real, das Pulver nicht. Passt auf euch auf.
+      <br><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+    </div>
+  </div>
+</section>
+
+<div id="whiteout"></div>
+<div id="toast" role="status"></div>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- Screens ---------- */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
+}
+
+/* ---------- Toast ---------- */
+let toastTimer=null;
+function toast(msg,ms=2200){
+  const t=$("#toast");t.textContent=msg;t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("on"),ms);
+}
+
+/* ---------- Audio (opt-in) ---------- */
+const audio={ctx:null,gain:null,bp:null,enabled:false};
+function initAudio(){
+  if(audio.ctx)return;
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  const ctx=new AC();
+  const len=ctx.sampleRate;
+  const buf=ctx.createBuffer(1,len,ctx.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+  const bp=ctx.createBiquadFilter();bp.type="bandpass";bp.frequency.value=850;bp.Q.value=.8;
+  const g=ctx.createGain();g.gain.value=0;
+  src.connect(bp).connect(g).connect(ctx.destination);src.start();
+  audio.ctx=ctx;audio.gain=g;audio.bp=bp;
+}
+function snort(intensity){
+  if(!audio.enabled||!audio.ctx)return;
+  const t=audio.ctx.currentTime;
+  audio.gain.gain.setTargetAtTime(Math.min(.28,.1+intensity*.2),t,.035);
+  audio.bp.frequency.setTargetAtTime(600+Math.min(1,intensity)*900,t,.05);
+}
+function snortStop(){
+  if(!audio.ctx)return;
+  audio.gain.gain.setTargetAtTime(0,audio.ctx.currentTime,.06);
+}
+function blip(){
+  if(!audio.enabled||!audio.ctx)return;
+  const ctx=audio.ctx,t=ctx.currentTime;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.type="triangle";o.frequency.setValueAtTime(340,t);
+  o.frequency.exponentialRampToValueAtTime(920,t+.13);
+  g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+.16);
+  o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.18);
+}
+$("#btn-sound").addEventListener("click",e=>{
+  audio.enabled=!audio.enabled;
+  if(audio.enabled){
+    if(audio.ctx)audio.ctx.resume();
+    else initAudio();
+  }else{
+    snortStop();
+    if(audio.ctx)audio.ctx.suspend();
+  }
+  e.currentTarget.textContent=audio.enabled?"TON [x]":"TON [ ]";
+  e.currentTarget.setAttribute("aria-pressed",String(audio.enabled));
+});
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden&&audio.enabled&&audio.ctx)audio.ctx.resume();
+});
+
+/* ---------- Game engine ---------- */
+const KILL_R=34, CELL=48, COMPLETE_AT=.86;
+const board=$("#board");
+const ctx=board.getContext("2d");
+let W=0,H=0,DPR=1;
+let off=null,offCtx=null;
+let particles=[],grid=new Map(),lines=[],puffs=[],flashes=[];
+let doneCount=0,gameActive=false,lastVib=0,idleTimer=null,idleShown=false;
+
+const LINE_TOASTS=[
+  "Das Briefing ergibt plötzlich Sinn.",
+  "Du willst den Pitch. Freiwillig. Am Wochenende.",
+  "Du liebst alle. Sogar den Kunden. Dein Herz rennt schon mal vor."
+];
+
+function gauss(){return (Math.random()+Math.random()+Math.random()-1.5)/1.5}
+function cellKey(x,y){return ((x/CELL)|0)*100000+((y/CELL)|0)}
+
+function sizeCanvas(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth;H=window.innerHeight;
+  board.width=W*DPR;board.height=H*DPR;
+  board.style.width=W+"px";board.style.height=H+"px";
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(!off){
+    off=document.createElement("canvas");
+    offCtx=off.getContext("2d");
+  }
+  off.width=W*DPR;off.height=H*DPR;
+  offCtx.setTransform(DPR,0,0,DPR,0,0);
+}
+
+function bezier(p0,cp,p1,t){
+  const u=1-t;
+  return {
+    x:u*u*p0.x+2*u*t*cp.x+t*t*p1.x,
+    y:u*u*p0.y+2*u*t*cp.y+t*t*p1.y
+  };
+}
+
+function buildLines(keepStatus){
+  const prevComplete=keepStatus?lines.map(l=>l.complete):[false,false,false];
+  const prevSkipped=keepStatus?lines.map(l=>l.skipped):[false,false,false];
+  const prevRatio=keepStatus?lines.map(l=>l.total?l.killed/l.total:0):[0,0,0];
+  particles=[];grid=new Map();lines=[];puffs=[];flashes=[];
+  const yFracs=[0.32,0.52,0.72];
+  for(let i=0;i<3;i++){
+    const y=H*yFracs[i]+(Math.random()-.5)*H*.02;
+    // echte Lines sind nie gleich: Länge ±20 %, Start versetzt, 1–3° Neigung
+    const margin=.08+Math.random()*.10;
+    const lenFrac=.62+Math.random()*.20;
+    const x0=W*margin;
+    const x1=Math.min(W*.94,x0+W*lenFrac);
+    const tilt=(Math.random()<.5?-1:1)*(1+Math.random()*2)*Math.PI/180;
+    const dy=Math.tan(tilt)*(x1-x0)/2;
+    const p0={x:x0,y:y-dy};
+    const p1={x:x1,y:y+dy};
+    const cp={x:(p0.x+p1.x)/2+(Math.random()-.5)*W*.08,y:y+(Math.random()-.5)*H*.04};
+    const len=Math.hypot(p1.x-p0.x,p1.y-p0.y);
+    const target=Math.round(Math.min(1400,Math.max(600,len*3.6)));
+    const line={p0,cp,p1,total:0,killed:0,complete:prevComplete[i]||false,skipped:prevSkipped[i]||false,idx:i};
+    lines.push(line);
+    if(line.complete){line.total=1;line.killed=1;continue}
+    // Klumpen + eine dünne Stelle — wie mit der Karte gehackt
+    const clumps=[];const nc=2+((Math.random()*3)|0);
+    for(let c=0;c<nc;c++)clumps.push(.08+Math.random()*.84);
+    const thinA=.15+Math.random()*.7,thinW=.04+Math.random()*.05;
+    const deadTarget=Math.round(prevRatio[i]*target);
+    let created=0,preDead=0;
+    for(let k=0;k<target;k++){
+      let t;
+      if(Math.random()<.38){
+        const c=clumps[(Math.random()*clumps.length)|0];
+        t=Math.min(1,Math.max(0,c+gauss()*.06));
+      }else{
+        t=Math.random();
+      }
+      if(Math.abs(t-thinA)<thinW&&Math.random()<.65)continue;
+      const pos=bezier(p0,cp,p1,t);
+      const stray=Math.random()<.12;
+      const sigma=stray?15:5.5;
+      const px=pos.x+gauss()*sigma;
+      const py=pos.y+gauss()*sigma;
+      const r=.5+Math.pow(Math.random(),2)*2.1;
+      const a=.3+Math.random()*.7;
+      const dead=preDead<deadTarget&&Math.random()<prevRatio[i];
+      const idx=particles.length;
+      particles.push({x:px,y:py,r,a,line:i,dead});
+      created++;
+      if(dead){preDead++;}
+      else{
+        const key=cellKey(px,py);
+        if(!grid.has(key))grid.set(key,[]);
+        grid.get(key).push(idx);
+      }
+    }
+    line.total=created;line.killed=preDead;
+    if(created>0&&preDead/created>=COMPLETE_AT)line.complete=true;
+  }
+  // Schmier-Spur + Puder auf den Offscreen zeichnen
+  offCtx.clearRect(0,0,W,H);
+  for(const l of lines){
+    if(l.complete)continue;
+    offCtx.save();
+    offCtx.lineCap="round";
+    offCtx.strokeStyle="rgba(255,255,255,.045)";
+    offCtx.lineWidth=16;
+    offCtx.beginPath();
+    offCtx.moveTo(l.p0.x,l.p0.y);
+    offCtx.quadraticCurveTo(l.cp.x,l.cp.y,l.p1.x,l.p1.y);
+    offCtx.stroke();
+    offCtx.strokeStyle="rgba(255,255,255,.02)";
+    offCtx.lineWidth=30;
+    offCtx.stroke();
+    offCtx.restore();
+  }
+  for(const p of particles){
+    if(p.dead)continue;
+    offCtx.globalAlpha=p.a;
+    offCtx.fillStyle=Math.random()<.05?"#ffffff":"#f4f2ff";
+    if(p.r>.8){
+      offCtx.beginPath();
+      offCtx.arc(p.x,p.y,p.r,0,6.2832);
+      offCtx.fill();
+    }else{
+      offCtx.fillRect(p.x-p.r,p.y-p.r,p.r*2,p.r*2);
+    }
+  }
+  offCtx.globalAlpha=1;
+  updateHud();
+  // Rebuild (Rotation/Resize) kann die letzte Line still über die Schwelle kippen — Finale trotzdem auslösen
+  if(gameActive&&doneCount>=3){
+    gameActive=false;
+    clearTimeout(idleTimer);
+    setTimeout(finish,300);
+  }
+}
+
+function updateHud(){
+  doneCount=lines.filter(l=>l.complete).length;
+  $("#lineCount").textContent=doneCount+"/3 GEZOGEN";
+}
+
+function distToSeg(px,py,ax,ay,bx,by){
+  const dx=bx-ax,dy=by-ay;
+  const l2=dx*dx+dy*dy;
+  if(l2===0)return Math.hypot(px-ax,py-ay);
+  let t=((px-ax)*dx+(py-ay)*dy)/l2;
+  t=Math.max(0,Math.min(1,t));
+  return Math.hypot(px-(ax+t*dx),py-(ay+t*dy));
+}
+
+function clearSegment(ax,ay,bx,by){
+  if(!gameActive)return;
+  const minX=Math.min(ax,bx)-KILL_R,maxX=Math.max(ax,bx)+KILL_R;
+  const minY=Math.min(ay,by)-KILL_R,maxY=Math.max(ay,by)+KILL_R;
+  let killedNow=0;const killPos=[];
+  for(let cx=(minX/CELL)|0;cx<=(maxX/CELL)|0;cx++){
+    for(let cy=(minY/CELL)|0;cy<=(maxY/CELL)|0;cy++){
+      const bucket=grid.get(cx*100000+cy);
+      if(!bucket)continue;
+      for(const idx of bucket){
+        const p=particles[idx];
+        if(p.dead)continue;
+        if(distToSeg(p.x,p.y,ax,ay,bx,by)<=KILL_R){
+          p.dead=true;killedNow++;
+          const line=lines[p.line];
+          line.killed++;
+          if(killPos.length<6&&Math.random()<.3)killPos.push(p);
+          if(!line.complete&&line.killed/line.total>=COMPLETE_AT)completeLine(line);
+        }
+      }
+    }
+  }
+  if(killedNow>0){
+    // erase on offscreen
+    offCtx.save();
+    offCtx.globalCompositeOperation="destination-out";
+    offCtx.lineWidth=KILL_R*2+4;
+    offCtx.lineCap="round";offCtx.lineJoin="round";
+    offCtx.strokeStyle="rgba(0,0,0,1)";
+    offCtx.beginPath();
+    offCtx.moveTo(ax,ay);
+    offCtx.lineTo(bx+(bx===ax?.01:0),by);
+    offCtx.stroke();
+    offCtx.restore();
+    // puffs toward pointer
+    for(const p of killPos){
+      puffs.push({x:p.x,y:p.y,tx:bx,ty:by,life:1,r:1+Math.random()*1.6});
+    }
+    if(puffs.length>140)puffs.splice(0,puffs.length-140);
+    // haptics
+    const now=performance.now();
+    lastWipe=now;
+    if(now-lastVib>90){navigator.vibrate&&navigator.vibrate(6);lastVib=now;}
+    snort(Math.min(1,killedNow/26));
+    resetIdle();
+  }
+}
+
+function completeLine(line){
+  line.complete=true;
+  updateHud();
+  flashes.push({line:line.idx,t0:performance.now()});
+  toast("Line "+(doneCount)+"/3: "+LINE_TOASTS[Math.min(doneCount-1,2)],2900);
+  blip();
+  navigator.vibrate&&navigator.vibrate([30,40,30]);
+  idleShown=false;
+  if(doneCount>=3){
+    gameActive=false;
+    clearTimeout(idleTimer);
+    setTimeout(finish,1650);
+  }
+}
+
+/* render loop — läuft nur, solange der Game-Screen aktiv ist */
+let rendering=false;
+function startRender(){
+  if(!rendering){rendering=true;requestAnimationFrame(render);}
+}
+function render(){
+  if(!$("#screen-game").classList.contains("active")){rendering=false;return;}
+  {
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(off,0,0,W,H);
+    // puffs
+    for(let i=puffs.length-1;i>=0;i--){
+      const p=puffs[i];
+      p.life-=.07;
+      if(p.life<=0){puffs.splice(i,1);continue}
+      p.x+=(p.tx-p.x)*.22;
+      p.y+=(p.ty-p.y)*.22;
+      ctx.globalAlpha=p.life*.8;
+      ctx.fillStyle="#fff";
+      ctx.fillRect(p.x,p.y,p.r,p.r);
+    }
+    ctx.globalAlpha=1;
+    // completion flashes
+    const now=performance.now();
+    for(let i=flashes.length-1;i>=0;i--){
+      const f=flashes[i];
+      const t=(now-f.t0)/700;
+      if(t>=1){flashes.splice(i,1);continue}
+      const l=lines[f.line];
+      ctx.save();
+      ctx.globalAlpha=(1-t)*.3;
+      ctx.strokeStyle="#fff";
+      ctx.lineWidth=16;
+      ctx.lineCap="round";
+      ctx.shadowColor="#fff";ctx.shadowBlur=26;
+      ctx.beginPath();
+      ctx.moveTo(l.p0.x,l.p0.y);
+      ctx.quadraticCurveTo(l.cp.x,l.cp.y,l.p1.x,l.p1.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  requestAnimationFrame(render);
+}
+
+/* pointer — Nasen sind Multi-Touch: State pro pointerId */
+const drags=new Map();
+let lastWipe=0;
+board.addEventListener("pointerdown",e=>{
+  if(!gameActive||drags.size>=3)return;
+  drags.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{board.setPointerCapture(e.pointerId)}catch(_){}
+  clearSegment(e.clientX,e.clientY,e.clientX,e.clientY);
+  e.preventDefault();
+});
+board.addEventListener("pointermove",e=>{
+  if(!gameActive)return;
+  const l=drags.get(e.pointerId);
+  if(!l)return;
+  let evs=e.getCoalescedEvents?e.getCoalescedEvents():null;
+  if(!evs||!evs.length)evs=[e];
+  let prev=l;
+  for(const ev of evs){
+    const p={x:ev.clientX,y:ev.clientY};
+    clearSegment(prev.x,prev.y,p.x,p.y);
+    prev=p;
+  }
+  drags.set(e.pointerId,prev);
+  e.preventDefault();
+});
+function endDrag(e){
+  drags.delete(e.pointerId);
+  if(drags.size===0)snortStop();
+}
+board.addEventListener("pointerup",endDrag);
+board.addEventListener("pointercancel",endDrag);
+
+/* idle nudge */
+function resetIdle(){
+  clearTimeout(idleTimer);
+  if(!gameActive)return;
+  idleTimer=setTimeout(()=>{
+    if(gameActive&&!idleShown){toast("Der Kunde ruft gleich an. Nur so.");idleShown=true;}
+  },14000);
+}
+
+/* skip (a11y / Feiglinge) — Guard gegen Kinn-Fehlauslösung beim Nase-Wischen */
+$("#btn-skip").addEventListener("click",()=>{
+  if(drags.size>0||performance.now()-lastWipe<400)return;
+  const line=lines.find(l=>!l.complete);
+  if(!line)return;
+  line.skipped=true;
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i];
+    if(!p.dead&&p.line===line.idx){p.dead=true;line.killed++;}
+  }
+  offCtx.save();
+  offCtx.globalCompositeOperation="destination-out";
+  offCtx.lineWidth=90;offCtx.lineCap="round";
+  offCtx.strokeStyle="rgba(0,0,0,1)";
+  offCtx.beginPath();
+  offCtx.moveTo(line.p0.x,line.p0.y);
+  offCtx.quadraticCurveTo(line.cp.x,line.cp.y,line.p1.x,line.p1.y);
+  offCtx.stroke();
+  offCtx.restore();
+  if(!line.complete)completeLine(line);
+});
+
+/* resize */
+let lastW=0,lastH=0;
+window.addEventListener("resize",()=>{
+  const dw=Math.abs(window.innerWidth-lastW),dh=Math.abs(window.innerHeight-lastH);
+  if(dw<60&&dh<140)return;
+  lastW=window.innerWidth;lastH=window.innerHeight;
+  sizeCanvas();
+  if($("#screen-game").classList.contains("active"))buildLines(true);
+});
+
+/* ---------- Flow ---------- */
+const LOAD_STEPS=["Spiegel wird geputzt","Lines werden gelegt","Karte wird abgewischt","Meeting wird verschoben"];
+let loadingActive=false;
+$("#btn-start").addEventListener("click",()=>{
+  if(loadingActive)return;
+  loadingActive=true;
+  showScreen("screen-loading");
+  const box=$("#loadlines");box.innerHTML="";
+  let i=0;
+  const stepMs=reduceMotion?120:780;
+  const tick=()=>{
+    if(i>0)box.children[i-1].classList.add("on");
+    if(i>=LOAD_STEPS.length){setTimeout(()=>{loadingActive=false;showScreen("screen-howto");},600);return}
+    const div=document.createElement("div");
+    div.innerHTML="&gt; "+LOAD_STEPS[i]+" … ";
+    if(i===LOAD_STEPS.length-1){const c=document.createElement("span");c.className="cursor";div.appendChild(c);}
+    box.appendChild(div);
+    i++;setTimeout(tick,stepMs);
+  };
+  tick();
+});
+if(matchMedia("(pointer: fine)").matches&&!("ontouchstart" in window)){
+  $("#deskhint").style.display="block";
+}
+$("#btn-go").addEventListener("click",startGame);
+function startGame(){
+  lastW=window.innerWidth;lastH=window.innerHeight;
+  try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock("portrait").catch(()=>{});}catch(_){}
+  sizeCanvas();
+  showScreen("screen-game");
+  gameActive=true;idleShown=false;
+  drags.clear();
+  buildLines(false);
+  startRender();
+  resetIdle();
+}
+
+/* ---------- Finish / Auflösung ---------- */
+function finish(){
+  snortStop();
+  clearTimeout(toastTimer);
+  $("#toast").classList.remove("on");
+  $("#whiteout").classList.add("on");
+  setTimeout(()=>{
+    showScreen("screen-end");
+    $("#screen-end").scrollTop=0;
+    $("#whiteout").classList.remove("on");
+    endSequence();
+  },600);
+}
+const endTimers=[];
+function clearEndTimers(){endTimers.forEach(clearTimeout);endTimers.length=0;}
+function endSequence(){
+  clearEndTimers();
+  const reveals=document.querySelectorAll("#screen-end .reveal");
+  const num=$("#pulseNum");
+  // Easter Egg: wer alle 3 Lines clean überspringt, kriegt den Ruhepuls
+  const allSkipped=lines.length===3&&lines.every(l=>l.skipped);
+  const stats=document.querySelectorAll("#statList p");
+  if(allSkipped){
+    stats[0].textContent="Schlaf: vorhanden.";
+    stats[1].textContent="Selbstwert: intakt.";
+    stats[2].textContent="Wochentag: trotzdem Dienstag.";
+  }else{
+    stats[0].textContent="Schlaf: wird nachgereicht.";
+    stats[1].textContent="Selbstwert: fremdfinanziert.";
+    stats[2].textContent="Wochentag: Dienstag.";
+  }
+  const target=allSkipped?64:178;
+  if(reduceMotion){
+    reveals.forEach(r=>r.classList.add("on"));
+    num.textContent=String(target);
+    return;
+  }
+  reveals.forEach(r=>r.classList.remove("on"));
+  num.textContent="72";
+  // Puls-Label + Zahl zuerst
+  endTimers.push(setTimeout(()=>{reveals[0].classList.add("on");reveals[1].classList.add("on");},250));
+  // count 72 -> target
+  endTimers.push(setTimeout(()=>{
+    const t0=performance.now(),dur=1400;
+    const count=()=>{
+      const t=Math.min(1,(performance.now()-t0)/dur);
+      const eased=t*t;
+      num.textContent=String(Math.round(72+eased*(target-72)));
+      if(t<1&&$("#screen-end").classList.contains("active"))requestAnimationFrame(count);
+    };
+    count();
+  },350));
+  // rest gestaffelt
+  let delay=1900;
+  for(let i=2;i<reveals.length;i++){
+    const el=reveals[i];
+    endTimers.push(setTimeout(()=>el.classList.add("on"),delay));
+    delay+=i<5?450:650;
+  }
+}
+
+/* restart + share */
+$("#btn-again").addEventListener("click",()=>{
+  clearEndTimers();
+  showScreen("screen-game");
+  gameActive=true;idleShown=false;
+  drags.clear();
+  sizeCanvas();buildLines(false);startRender();resetIdle();
+});
+/* Share mit Fallback-Kette — navigator.share fehlt im LinkedIn-WebView */
+$("#btn-share").addEventListener("click",async()=>{
+  const data={
+    title:"schnff. — die Koks-App",
+    text:"Stressbewältigung für die Werbebranche. Mit der Nase zu bedienen. 0,0 g Wirkstoff, 100 % Satire.",
+    url:location.href
+  };
+  if(navigator.share){
+    try{await navigator.share(data);return;}
+    catch(e){if(e&&e.name==="AbortError")return;}
+  }
+  try{
+    await navigator.clipboard.writeText(location.href);
+    toast("Link kopiert.");return;
+  }catch(e){}
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=location.href;ta.setAttribute("readonly","");
+    ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();
+    const ok=document.execCommand("copy");
+    document.body.removeChild(ta);
+    if(ok){toast("Link kopiert.");return;}
+  }catch(e){}
+  toast("Link: "+location.host+location.pathname,4200);
+});
+</script>
+</body>
+</html>

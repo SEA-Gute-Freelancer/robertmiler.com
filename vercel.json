@@ -3,5 +3,12 @@
   "outputDirectory": ".",
   "framework": null,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/koks",
+      "destination": "/schnff",
+      "permanent": false
+    }
+  ]
 }
